@@ -11,7 +11,8 @@ import SwiftUI
 struct meningiApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SplashView()
         }
     }
 }
+
