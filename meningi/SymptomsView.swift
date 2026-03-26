@@ -108,10 +108,7 @@ struct SymptomsView: View {
                     bottomArea
                 }
             }
-            .navigationTitle("Symptom Checker")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(design.background, for: .navigationBar)
+            .toolbar(.hidden, for: .navigationBar)
             .onChange(of: selectedSymptoms) { _ in
                 checkForEmergencyEscalation()
             }
@@ -681,7 +678,7 @@ private enum AgeGroup: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .older: return "Older child / teen / adult"
+        case .older: return "Older"
         case .baby: return "Baby under 1"
         }
     }
@@ -728,7 +725,7 @@ private enum ResultState: String, Equatable, Identifiable {
         case .urgent:
             return "A same-day medical assessment is recommended."
         case .seekAdvice:
-            return "These symptoms may need prompt professional advice, especially if they worsen."
+            return "Seek prompt medical advice, especially if symptoms worsen."
         case .monitor:
             return "Keep watching closely. Seek help promptly if symptoms worsen or new red flags appear."
         }

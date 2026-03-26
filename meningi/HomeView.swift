@@ -10,18 +10,17 @@ struct HomeView: View {
 
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 28) {
-                    Spacer(minLength: 40)
+                    Spacer(minLength: 28)
 
                     headerSection
-
                     storyCard
-
                     actionButtons
 
-                    Spacer(minLength: 30)
+                    Spacer(minLength: 20)
                 }
                 .padding(.horizontal, 20)
-                .padding(.vertical, 24)
+                .padding(.top, 24)
+                .padding(.bottom, 30)
             }
         }
     }
@@ -29,31 +28,32 @@ struct HomeView: View {
     private var headerSection: some View {
         VStack(spacing: 10) {
             Text("meningi")
-                .font(.system(size: 38, weight: .bold, design: .rounded))
-                .foregroundColor(.white)
+                .font(.system(size: 36, weight: .bold, design: .rounded))
+                .foregroundStyle(.white)
 
             Text("Early awareness saves lives.")
                 .font(.system(size: 15, weight: .medium))
-                .foregroundColor(.white.opacity(0.68))
+                .foregroundStyle(.white.opacity(0.68))
         }
         .multilineTextAlignment(.center)
-        .padding(.top, 12)
+        .frame(maxWidth: .infinity)
+        .padding(.top, 20)
     }
 
     private var storyCard: some View {
         VStack(alignment: .leading, spacing: 14) {
             Text("Why this app exists")
                 .font(.system(size: 20, weight: .semibold))
-                .foregroundColor(.white)
+                .foregroundStyle(.white)
 
             Text("My younger brother nearly died from meningitis. The early signs can look ordinary at first, and that delay can be dangerous. I made meningi to help people recognise serious symptoms faster and know when to act.")
                 .font(.system(size: 16))
-                .foregroundColor(.white.opacity(0.82))
+                .foregroundStyle(.white.opacity(0.82))
                 .lineSpacing(4)
 
             Text("This app is not a diagnosis. It is a fast, clear awareness tool designed to help you respond sooner.")
                 .font(.system(size: 14, weight: .medium))
-                .foregroundColor(.white.opacity(0.62))
+                .foregroundStyle(.white.opacity(0.62))
                 .lineSpacing(3)
         }
         .padding(20)
@@ -75,7 +75,7 @@ struct HomeView: View {
             } label: {
                 Text("Check symptoms")
                     .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 16)
                     .background(
@@ -89,7 +89,7 @@ struct HomeView: View {
             } label: {
                 Text("Learn more")
                     .font(.system(size: 17, weight: .medium))
-                    .foregroundColor(.white.opacity(0.86))
+                    .foregroundStyle(.white.opacity(0.86))
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 15)
                     .background(

@@ -1,8 +1,3 @@
-//
-//  LearnView.swift
-//  meningi
-//
-
 import SwiftUI
 
 struct LearnView: View {
@@ -14,51 +9,51 @@ struct LearnView: View {
                 design.background
                     .ignoresSafeArea()
 
-                ScrollView(showsIndicators: false) {
-                    VStack(alignment: .leading, spacing: design.sectionSpacing) {
-                        introSection
+                VStack(spacing: 0) {
+                    headerBlock
 
-                        infoCard(
-                            title: "Common warning signs",
-                            icon: "eye.fill",
-                            accent: design.teal
-                        ) {
-                            bulletList([
-                                "fever",
-                                "bad or unusual headache",
-                                "stiff neck",
-                                "sensitivity to light",
-                                "vomiting",
-                                "drowsiness or hard to wake",
-                                "confusion"
-                            ])
+                    ScrollView(showsIndicators: false) {
+                        VStack(alignment: .leading, spacing: design.sectionSpacing) {
+                            introBlock
+
+                            infoCard(
+                                title: "Common warning signs",
+                                icon: "eye.fill",
+                                accent: design.teal
+                            ) {
+                                bulletList([
+                                    "fever",
+                                    "bad or unusual headache",
+                                    "stiff neck",
+                                    "sensitivity to light",
+                                    "vomiting",
+                                    "drowsiness or hard to wake",
+                                    "confusion"
+                                ])
+                            }
+
+                            infoCard(
+                                title: "Possible sepsis signs",
+                                icon: "cross.case.fill",
+                                accent: design.teal
+                            ) {
+                                bulletList([
+                                    "cold hands and feet",
+                                    "rapid breathing",
+                                    "pale, blue, or mottled skin",
+                                    "severe limb or muscle pain",
+                                    "symptoms worsening quickly"
+                                ])
+                            }
+
+                            emergencyBox
                         }
-
-                        infoCard(
-                            title: "Possible sepsis signs",
-                            icon: "cross.case.fill",
-                            accent: design.teal
-                        ) {
-                            bulletList([
-                                "cold hands and feet",
-                                "rapid breathing",
-                                "pale, blue, or mottled skin",
-                                "severe limb or muscle pain",
-                                "symptoms worsening quickly"
-                            ])
-                        }
-
-                        emergencyBox
+                        .padding(.horizontal, design.horizontalPadding)
+                        .padding(.bottom, 32)
                     }
-                    .padding(.horizontal, design.horizontalPadding)
-                    .padding(.top, 20)
-                    .padding(.bottom, 32)
                 }
             }
-            .navigationTitle("Learn")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(design.background, for: .navigationBar)
+            .toolbar(.hidden, for: .navigationBar)
         }
     }
 }
@@ -67,50 +62,46 @@ struct LearnView: View {
 
 private extension LearnView {
 
-    var introSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 10) {
-                ZStack {
-                    Circle()
-                        .fill(design.teal.opacity(0.16))
-                        .frame(width: 38, height: 38)
+    var headerBlock: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Learn")
+                .font(.system(size: 28, weight: .bold, design: .rounded))
+                .foregroundStyle(.white)
 
-                    Image(systemName: "waveform.path.ecg")
-                        .font(.system(size: 17, weight: .bold))
-                        .foregroundStyle(design.teal)
-                }
+            Text("Know the warning signs and act early.")
+                .font(.caption)
+                .foregroundStyle(design.secondaryText)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, design.horizontalPadding)
+        .padding(.top, 10)
+        .padding(.bottom, 12)
+    }
 
-                Text("Know the signs. Act early.")
-                    .font(.system(size: 30, weight: .bold, design: .rounded))
-                    .foregroundStyle(.white)
-            }
+    var introBlock: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Meningitis can become serious quickly.")
+                .font(.headline.weight(.semibold))
+                .foregroundStyle(.white)
 
-            Text("Meningitis can become serious quickly. Early symptoms may look like flu or a general infection.")
+            Text("Early symptoms can look like flu or a general infection, so it is important to recognise the more concerning signs.")
                 .font(.subheadline)
                 .foregroundStyle(design.secondaryText)
 
-            Text("Sepsis can also develop, which is why breathing, circulation, and skin changes matter.")
+            Text("Sepsis can also develop, which is why breathing, circulation, skin changes, and rapid worsening matter.")
                 .font(.subheadline)
                 .foregroundStyle(design.secondaryText)
         }
-        .padding(18)
+        .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
-            LinearGradient(
-                colors: [
-                    design.cardTop,
-                    design.cardBottom
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(design.cardFill)
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .stroke(design.teal.opacity(0.18), lineWidth: 1)
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .stroke(.white.opacity(0.05), lineWidth: 1)
         )
-        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
-        .shadow(color: .black.opacity(0.22), radius: 18, y: 8)
     }
 
     func infoCard<Content: View>(
@@ -148,7 +139,6 @@ private extension LearnView {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .stroke(.white.opacity(0.05), lineWidth: 1)
         )
-        .shadow(color: .black.opacity(0.18), radius: 14, y: 6)
     }
 
     var emergencyBox: some View {
@@ -194,7 +184,6 @@ private extension LearnView {
                 .stroke(Color.red.opacity(0.55), lineWidth: 1.3)
         )
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .shadow(color: Color.red.opacity(0.12), radius: 12, y: 4)
     }
 
     func bulletList(_ items: [String]) -> some View {
@@ -229,6 +218,7 @@ private struct Design {
     let cardBottom = Color(red: 0.09, green: 0.10, blue: 0.13)
 
     let teal = Color(red: 0.18, green: 0.78, blue: 0.76)
+    let sepsisOrange = Color(red: 0.96, green: 0.56, blue: 0.20)
 
     let bodyText = Color.white.opacity(0.92)
     let secondaryText = Color.white.opacity(0.68)
