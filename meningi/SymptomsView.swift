@@ -73,7 +73,7 @@ struct SymptomsView: View {
                             symptomSlide(
                                 title: SymptomSection.baby.title,
                                 symptoms: SymptomSection.baby.symptoms,
-                                accent: design.teal
+                                accent: design.babyPurple
                             )
                             .tag(indexFor(.baby))
                         }
@@ -81,21 +81,21 @@ struct SymptomsView: View {
                         symptomSlide(
                             title: SymptomSection.emergency.title,
                             symptoms: SymptomSection.emergency.symptoms,
-                            accent: .red
+                            accent: design.emergencyRed
                         )
                         .tag(indexFor(.emergency))
 
                         symptomSlide(
                             title: SymptomSection.core.title,
                             symptoms: SymptomSection.core.symptoms,
-                            accent: design.teal
+                            accent: design.coreYellow
                         )
                         .tag(indexFor(.core))
 
                         symptomSlide(
                             title: SymptomSection.sepsis.title,
                             symptoms: SymptomSection.sepsis.symptoms,
-                            accent: design.amber
+                            accent: design.sepsisOrange
                         )
                         .tag(indexFor(.sepsis))
 
@@ -277,27 +277,19 @@ private extension SymptomsView {
     var generalOtherSlide: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: 12) {
-                sectionHeader(title: "General + Other", accent: design.teal)
-
-                Text("General")
-                    .font(.headline.weight(.semibold))
-                    .foregroundStyle(.white)
-                    .padding(.top, 2)
+                sectionHeader(title: "General", accent: design.generalBlueGrey)
 
                 VStack(spacing: 8) {
                     ForEach(SymptomSection.general.symptoms) { symptom in
-                        symptomRow(symptom, accent: design.teal)
+                        symptomRow(symptom, accent: design.generalBlueGrey)
                     }
                 }
 
-                Text("Other")
-                    .font(.headline.weight(.semibold))
-                    .foregroundStyle(.white)
-                    .padding(.top, 4)
+                sectionHeader(title: "Other", accent: design.generalBlueGrey)
 
                 VStack(spacing: 8) {
                     ForEach(SymptomSection.modifiers.symptoms) { symptom in
-                        symptomRow(symptom, accent: design.amber)
+                        symptomRow(symptom, accent: design.generalBlueGrey)
                     }
                 }
             }
@@ -305,7 +297,7 @@ private extension SymptomsView {
             .padding(.bottom, 16)
         }
     }
-
+    
     func sectionHeader(
         title: String,
         accent: Color
@@ -341,7 +333,7 @@ private extension SymptomsView {
                         .foregroundStyle(.white)
                         .multilineTextAlignment(.leading)
 
-                    if let note = symptom.note, (isSelected || accent == .red) {
+                    if let note = symptom.note, (isSelected || accent == design.emergencyRed) {
                         Text(note)
                             .font(.caption)
                             .foregroundStyle(design.secondaryText)
@@ -926,7 +918,11 @@ private struct Design {
     let buttonSecondaryFill = Color(red: 0.14, green: 0.15, blue: 0.18)
 
     let teal = Color(red: 0.18, green: 0.78, blue: 0.76)
-    let amber = Color(red: 0.95, green: 0.70, blue: 0.24)
+    let babyPurple = Color(red: 0.66, green: 0.52, blue: 0.95)
+    let emergencyRed = Color.red
+    let coreYellow = Color(red: 0.95, green: 0.78, blue: 0.22)
+    let sepsisOrange = Color(red: 0.96, green: 0.56, blue: 0.20)
+    let generalBlueGrey = Color(red: 0.58, green: 0.68, blue: 0.78)
 
     let bodyText = Color.white.opacity(0.92)
     let secondaryText = Color.white.opacity(0.68)
