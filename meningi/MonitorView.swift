@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct MonitorView: View {
-    @Environment(\.dismiss) private var dismiss
+    let onEditSymptoms: () -> Void
+    let onRestart: () -> Void
 
     var body: some View {
         ZStack {
@@ -65,20 +66,41 @@ struct MonitorView: View {
                 Spacer()
 
                 VStack(spacing: 12) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("Back to symptoms")
-                            .font(.headline.weight(.semibold))
-                            .foregroundStyle(.black.opacity(0.82))
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 16)
-                            .background(
-                                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                    .fill(Color.green)
-                            )
+                    HStack(spacing: 10) {
+                        Button {
+                            onEditSymptoms()
+                        } label: {
+                            Text("Edit")
+                                .font(.headline.weight(.semibold))
+                                .foregroundStyle(.black.opacity(0.82))
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 15)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                        .fill(Color.green)
+                                )
+                        }
+                        .buttonStyle(.plain)
+
+                        Button {
+                            onRestart()
+                        } label: {
+                            Text("Restart")
+                                .font(.headline.weight(.semibold))
+                                .foregroundStyle(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 15)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                        .fill(Color.white.opacity(0.08))
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                        .stroke(Color.white.opacity(0.08), lineWidth: 1)
+                                )
+                        }
+                        .buttonStyle(.plain)
                     }
-                    .buttonStyle(.plain)
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 22)
@@ -125,5 +147,8 @@ struct MonitorView: View {
 }
 
 #Preview {
-    MonitorView()
+    MonitorView(
+        onEditSymptoms: {},
+        onRestart: {}
+    )
 }

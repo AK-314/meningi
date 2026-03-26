@@ -132,11 +132,35 @@ struct SymptomsView: View {
             .fullScreenCover(item: $presentedResult) { result in
                 switch result {
                 case .urgent:
-                    UrgentView()
+                    UrgentView(
+                        onEditSymptoms: {
+                            presentedResult = nil
+                        },
+                        onRestart: {
+                            resetChecker()
+                        }
+                    )
+
                 case .seekAdvice:
-                    SeekAdviceView()
+                    SeekAdviceView(
+                        onEditSymptoms: {
+                            presentedResult = nil
+                        },
+                        onRestart: {
+                            resetChecker()
+                        }
+                    )
+
                 case .monitor:
-                    MonitorView()
+                    MonitorView(
+                        onEditSymptoms: {
+                            presentedResult = nil
+                        },
+                        onRestart: {
+                            resetChecker()
+                        }
+                    )
+
                 case .emergency:
                     EmptyView()
                 }
@@ -506,6 +530,15 @@ private extension SymptomsView {
 
     func indexFor(_ slide: Slide) -> Int {
         slides.firstIndex(of: slide) ?? 0
+    }
+    
+    func resetChecker() {
+        selectedSymptoms.removeAll()
+        ageGroup = .older
+        isImmunocompromised = false
+        presentedResult = nil
+        currentSlideIndex = 0
+        hasTriggeredEmergency = false
     }
 
     var progressFraction: CGFloat {

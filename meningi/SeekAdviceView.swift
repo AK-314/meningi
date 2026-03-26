@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct SeekAdviceView: View {
-    @Environment(\.dismiss) private var dismiss
+    let onEditSymptoms: () -> Void
+    let onRestart: () -> Void
 
     var body: some View {
         ZStack {
@@ -64,18 +65,37 @@ struct SeekAdviceView: View {
 
                 Spacer()
 
-                VStack(spacing: 12) {
+                HStack(spacing: 10) {
                     Button {
-                        dismiss()
+                        onEditSymptoms()
                     } label: {
-                        Text("Back to symptoms")
+                        Text("Edit")
                             .font(.headline.weight(.semibold))
                             .foregroundStyle(.black.opacity(0.82))
                             .frame(maxWidth: .infinity)
-                            .padding(.vertical, 16)
+                            .padding(.vertical, 15)
                             .background(
                                 RoundedRectangle(cornerRadius: 16, style: .continuous)
                                     .fill(Color.yellow)
+                            )
+                    }
+                    .buttonStyle(.plain)
+
+                    Button {
+                        onRestart()
+                    } label: {
+                        Text("Restart")
+                            .font(.headline.weight(.semibold))
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 15)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    .fill(Color.white.opacity(0.08))
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    .stroke(Color.white.opacity(0.08), lineWidth: 1)
                             )
                     }
                     .buttonStyle(.plain)
@@ -125,5 +145,8 @@ struct SeekAdviceView: View {
 }
 
 #Preview {
-    SeekAdviceView()
+    SeekAdviceView(
+        onEditSymptoms: {},
+        onRestart: {}
+    )
 }
