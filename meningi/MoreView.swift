@@ -13,9 +13,30 @@ struct MoreView: View {
                     headerBlock
 
                     VStack(spacing: 12) {
-                        moreRow("Vaccinations", systemImage: "syringe")
-                        moreRow("My story", systemImage: "person.text.rectangle")
-                        moreRow("About", systemImage: "info.circle")
+                        NavigationLink {
+                            AboutView()
+                        } label: {
+                            moreRow("About", systemImage: "info.circle")
+                        }
+                        .buttonStyle(.plain)
+
+                        NavigationLink {
+                            VaccinationsView()
+                        } label: {
+                            moreRow("Vaccinations", systemImage: "syringe")
+                        }
+                        .buttonStyle(.plain)
+
+                        NavigationLink {
+                            EmergencyInfoView()
+                        } label: {
+                            moreRow(
+                                "Emergency",
+                                systemImage: "exclamationmark.triangle.fill",
+                                iconColor: .red
+                            )
+                        }
+                        .buttonStyle(.plain)
                     }
 
                     Spacer()
@@ -34,16 +55,24 @@ struct MoreView: View {
             Text("More")
                 .font(.system(size: 28, weight: .bold, design: .rounded))
                 .foregroundStyle(.white)
+
+            Text("Extra guidance and information.")
+                .font(.caption)
+                .foregroundStyle(design.secondaryText)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.bottom, 8)
     }
 
-    private func moreRow(_ title: String, systemImage: String) -> some View {
+    private func moreRow(
+        _ title: String,
+        systemImage: String,
+        iconColor: Color? = nil
+    ) -> some View {
         HStack(spacing: 12) {
             Image(systemName: systemImage)
                 .font(.system(size: 16, weight: .semibold))
-                .foregroundStyle(design.secondaryText)
+                .foregroundStyle(iconColor ?? design.teal)
                 .frame(width: 22)
 
             Text(title)
@@ -74,6 +103,7 @@ private struct Design {
 
     let background = Color(red: 0.04, green: 0.07, blue: 0.11)
     let cardFill = Color(red: 0.09, green: 0.13, blue: 0.19)
+    let teal = Color(red: 0.18, green: 0.78, blue: 0.76)
     let secondaryText = Color.white.opacity(0.68)
 }
 
