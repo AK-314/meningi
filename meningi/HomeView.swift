@@ -24,6 +24,8 @@ struct HomeView: View {
             }
         }
     }
+    
+    private let teal = Color(red: 0.18, green: 0.78, blue: 0.76)
 
     private var headerSection: some View {
         VStack(spacing: 10) {
@@ -41,31 +43,24 @@ struct HomeView: View {
     }
 
     private var storyCard: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 12) {
             Text("Why this app exists")
-                .font(.system(size: 20, weight: .semibold))
+                .font(.system(size: 18, weight: .semibold))
                 .foregroundStyle(.white)
 
             Text("My younger brother nearly died from meningitis. The early signs can look ordinary at first, and that delay can be dangerous. I made meningi to help people recognise serious symptoms faster and know when to act.")
-                .font(.system(size: 16))
-                .foregroundStyle(.white.opacity(0.82))
-                .lineSpacing(4)
+                .font(.system(size: 15))
+                .foregroundStyle(.white.opacity(0.85))
+                .lineSpacing(3)
 
             Text("This app is not a diagnosis. It is a fast, clear awareness tool designed to help you respond sooner.")
-                .font(.system(size: 14, weight: .medium))
-                .foregroundStyle(.white.opacity(0.62))
-                .lineSpacing(3)
+                .font(.system(size: 14))
+                .foregroundStyle(.white.opacity(0.65))
         }
-        .padding(20)
+        .padding(18)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .fill(Color.white.opacity(0.08))
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .stroke(Color.white.opacity(0.08), lineWidth: 1)
-        )
+        .background(Color(red: 0.09, green: 0.13, blue: 0.19))
+        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 
     private var actionButtons: some View {
@@ -75,14 +70,15 @@ struct HomeView: View {
             } label: {
                 Text("Check symptoms")
                     .font(.system(size: 18, weight: .semibold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.black.opacity(0.85))
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 16)
                     .background(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(Color.teal.opacity(0.9))
+                            .fill(teal)
                     )
             }
+            .buttonStyle(.plain)
 
             Button {
                 selectedTab = 2
@@ -107,9 +103,9 @@ struct HomeView: View {
     private var background: some View {
         LinearGradient(
             colors: [
-                Color(red: 0.06, green: 0.10, blue: 0.11),
-                Color(red: 0.03, green: 0.05, blue: 0.06),
-                Color.black
+                Color(red: 0.05, green: 0.09, blue: 0.15),
+                Color(red: 0.03, green: 0.05, blue: 0.09),
+                Color(red: 0.01, green: 0.02, blue: 0.04)
             ],
             startPoint: .topLeading,
             endPoint: .bottomTrailing

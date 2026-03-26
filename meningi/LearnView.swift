@@ -211,11 +211,11 @@ private struct Design {
     let horizontalPadding: CGFloat = 16
     let sectionSpacing: CGFloat = 18
 
-    let background = Color(red: 0.05, green: 0.06, blue: 0.08)
+    let background = Color(red: 0.04, green: 0.07, blue: 0.11)
 
-    let cardFill = Color(red: 0.10, green: 0.11, blue: 0.14)
-    let cardTop = Color(red: 0.12, green: 0.13, blue: 0.17)
-    let cardBottom = Color(red: 0.09, green: 0.10, blue: 0.13)
+    let cardFill = Color(red: 0.09, green: 0.13, blue: 0.19)
+    let cardTop = Color(red: 0.10, green: 0.15, blue: 0.22)
+    let cardBottom = Color(red: 0.07, green: 0.11, blue: 0.17)
 
     let teal = Color(red: 0.18, green: 0.78, blue: 0.76)
     let sepsisOrange = Color(red: 0.96, green: 0.56, blue: 0.20)

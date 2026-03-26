@@ -221,30 +221,37 @@ private extension SymptomsView {
             VStack(alignment: .leading, spacing: 12) {
                 sectionHeader(title: "Setup", accent: design.teal)
 
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("Age group")
-                        .font(.headline.weight(.semibold))
-                        .foregroundStyle(.white)
+                VStack(alignment: .leading, spacing: 16) {
+                    VStack(alignment: .leading, spacing: 14) {
+                        // Age group
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Age group")
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundStyle(.white)
 
-                    Picker("Age group", selection: $ageGroup) {
-                        ForEach(AgeGroup.allCases) { group in
-                            Text(group.title).tag(group)
+                            Picker("Age group", selection: $ageGroup) {
+                                ForEach(AgeGroup.allCases) { group in
+                                    Text(group.title).tag(group)
+                                }
+                            }
+                            .pickerStyle(.segmented)
+                            .tint(design.teal)
                         }
-                    }
-                    .pickerStyle(.segmented)
-                    .tint(design.teal)
-                }
-                .darkCardStyle()
 
-                VStack(alignment: .leading, spacing: 10) {
-                    Toggle(isOn: $isImmunocompromised) {
-                        Text("Immunocompromised")
-                            .font(.headline.weight(.semibold))
-                            .foregroundStyle(.white)
+                        Divider().background(.white.opacity(0.08))
+
+                        // Immunocompromised
+                        Toggle(isOn: $isImmunocompromised) {
+                            Text("Immunocompromised")
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundStyle(.white)
+                        }
+                        .toggleStyle(SwitchToggleStyle(tint: design.teal))
                     }
-                    .toggleStyle(SwitchToggleStyle(tint: design.teal))
+                    .padding(16)
+                    .background(design.cardFill)
+                    .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
                 }
-                .darkCardStyle()
             }
             .padding(.horizontal, design.horizontalPadding)
             .padding(.bottom, 16)
@@ -904,15 +911,15 @@ private struct Design {
     let horizontalPadding: CGFloat = 16
     let sectionSpacing: CGFloat = 14
 
-    let background = Color(red: 0.05, green: 0.06, blue: 0.08)
+    let background = Color(red: 0.04, green: 0.07, blue: 0.11)
 
-    let cardFill = Color(red: 0.10, green: 0.11, blue: 0.14)
+    let cardFill = Color(red: 0.09, green: 0.13, blue: 0.19)
     let cardTop = Color(red: 0.12, green: 0.13, blue: 0.17)
     let cardBottom = Color(red: 0.09, green: 0.10, blue: 0.13)
 
-    let rowFill = Color(red: 0.11, green: 0.12, blue: 0.15)
-    let bottomBarFill = Color(red: 0.08, green: 0.09, blue: 0.11)
-    let buttonSecondaryFill = Color(red: 0.14, green: 0.15, blue: 0.18)
+    let rowFill = Color(red: 0.10, green: 0.13, blue: 0.18)
+    let bottomBarFill = Color(red: 0.07, green: 0.10, blue: 0.14)
+    let buttonSecondaryFill = Color(red: 0.12, green: 0.16, blue: 0.22)
 
     let teal = Color(red: 0.18, green: 0.78, blue: 0.76)
     let babyPurple = Color(red: 0.66, green: 0.52, blue: 0.95)
