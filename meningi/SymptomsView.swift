@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct SymptomsView: View {
-    @Binding var selectedTab: Int
 
     @State private var selectedSymptoms: Set<SymptomID> = []
     @State private var ageGroup: AgeGroup = .older
@@ -162,7 +161,11 @@ struct SymptomsView: View {
                     )
 
                 case .emergency:
-                    EmptyView()
+                    EmergencyView(
+                        onRestart: {
+                            resetChecker()
+                        }
+                    )
                 }
             }
         }
@@ -474,12 +477,7 @@ private extension SymptomsView {
         }
 
         let result = evaluateRisk()
-
-        if result == .emergency {
-            selectedTab = 3
-        } else {
-            presentedResult = result
-        }
+        presentedResult = result
     }
 
     func goBack() {
@@ -521,10 +519,12 @@ private extension SymptomsView {
         }
 
         guard !hasTriggeredEmergency else { return }
+        guard presentedResult == nil else { return }
+
         hasTriggeredEmergency = true
 
         DispatchQueue.main.async {
-            selectedTab = 3
+            presentedResult = .emergency
         }
     }
 
@@ -931,5 +931,5 @@ private extension View {
 }
 
 #Preview {
-    SymptomsView(selectedTab: .constant(1))
+    SymptomsView()
 }

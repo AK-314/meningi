@@ -11,7 +11,7 @@ struct ContentView: View {
                 }
                 .tag(0)
 
-            SymptomsView(selectedTab: $selectedTab)
+            SymptomsView()
                 .tabItem {
                     Label("Check", systemImage: "stethoscope")
                 }
@@ -23,9 +23,9 @@ struct ContentView: View {
                 }
                 .tag(2)
 
-            EmergencyView(selectedTab: $selectedTab)
+            MoreView()
                 .tabItem {
-                    Label("Emergency", systemImage: "exclamationmark.triangle.fill")
+                    Label("More", systemImage: "line.3.horizontal")
                 }
                 .tag(3)
         }
