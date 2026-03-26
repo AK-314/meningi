@@ -50,6 +50,11 @@ struct SymptomsView: View {
         selectedSymptoms.count
     }
 
+    private var currentRiskResult: ResultState? {
+        guard !selectedSymptoms.isEmpty else { return nil }
+        return evaluateRisk()
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -67,38 +72,30 @@ struct SymptomsView: View {
                         if ageGroup == .baby {
                             symptomSlide(
                                 title: SymptomSection.baby.title,
-                                subtitle: SymptomSection.baby.subtitle,
                                 symptoms: SymptomSection.baby.symptoms,
-                                accent: design.teal,
-                                systemImage: "figure.and.child.holdinghands"
+                                accent: design.teal
                             )
                             .tag(indexFor(.baby))
                         }
 
                         symptomSlide(
                             title: SymptomSection.emergency.title,
-                            subtitle: SymptomSection.emergency.subtitle,
                             symptoms: SymptomSection.emergency.symptoms,
-                            accent: .red,
-                            systemImage: "exclamationmark.triangle.fill"
+                            accent: .red
                         )
                         .tag(indexFor(.emergency))
 
                         symptomSlide(
                             title: SymptomSection.core.title,
-                            subtitle: SymptomSection.core.subtitle,
                             symptoms: SymptomSection.core.symptoms,
-                            accent: design.teal,
-                            systemImage: "brain.head.profile"
+                            accent: design.teal
                         )
                         .tag(indexFor(.core))
 
                         symptomSlide(
                             title: SymptomSection.sepsis.title,
-                            subtitle: SymptomSection.sepsis.subtitle,
                             symptoms: SymptomSection.sepsis.symptoms,
-                            accent: design.amber,
-                            systemImage: "waveform.path.ecg"
+                            accent: design.amber
                         )
                         .tag(indexFor(.sepsis))
 
@@ -191,6 +188,7 @@ private extension SymptomsView {
         .padding(.top, 10)
         .padding(.bottom, 8)
     }
+
     var progressBlock: some View {
         VStack(spacing: 8) {
             HStack(spacing: 8) {
@@ -258,10 +256,8 @@ private extension SymptomsView {
 
     func symptomSlide(
         title: String,
-        subtitle: String,
         symptoms: [SymptomItem],
-        accent: Color,
-        systemImage: String
+        accent: Color
     ) -> some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: 10) {
@@ -429,40 +425,62 @@ private extension SymptomsView {
         }
     }
 
+    @ViewBuilder
     var liveStatusPill: some View {
-        let result = evaluateRisk()
+        if let result = currentRiskResult {
+            HStack(alignment: .top, spacing: 10) {
+                Image(systemName: result.iconName)
+                    .foregroundStyle(result.borderColor)
+                    .padding(.top, 2)
 
-        return HStack(alignment: .top, spacing: 10) {
-            Image(systemName: result.iconName)
-                .foregroundStyle(result.borderColor)
-                .padding(.top, 2)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(result.shortLabel)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
 
-            VStack(alignment: .leading, spacing: 4) {
-                Text(result.shortLabel)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.white)
-                    .multilineTextAlignment(.leading)
-                    .fixedSize(horizontal: false, vertical: true)
+                    Text(result.message)
+                        .font(.caption)
+                        .foregroundStyle(design.secondaryText)
+                        .multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .layoutPriority(1)
 
-                Text(result.message)
+                Spacer(minLength: 0)
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 11)
+            .background(result.backgroundColor)
+            .overlay(
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .stroke(result.borderColor.opacity(0.45), lineWidth: 1)
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        } else {
+            HStack(alignment: .top, spacing: 10) {
+                Image(systemName: "circle.dashed")
+                    .foregroundStyle(design.secondaryText)
+                    .padding(.top, 2)
+
+                Text("Select symptoms to see the current risk level.")
                     .font(.caption)
                     .foregroundStyle(design.secondaryText)
-                    .multilineTextAlignment(.leading)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .layoutPriority(1)
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
-            Spacer(minLength: 0)
+                Spacer(minLength: 0)
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 11)
+            .background(design.rowFill)
+            .overlay(
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .stroke(.white.opacity(0.06), lineWidth: 1)
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 11)
-        .background(result.backgroundColor)
-        .overlay(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .stroke(result.borderColor.opacity(0.45), lineWidth: 1)
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 }
 
@@ -476,8 +494,7 @@ private extension SymptomsView {
             return
         }
 
-        let result = evaluateRisk()
-        presentedResult = result
+        presentedResult = evaluateRisk()
     }
 
     func goBack() {
@@ -511,6 +528,11 @@ private extension SymptomsView {
     }
 
     func checkForEmergencyEscalation() {
+        guard !selectedSymptoms.isEmpty else {
+            hasTriggeredEmergency = false
+            return
+        }
+
         let result = evaluateRisk()
 
         guard result == .emergency else {
@@ -531,7 +553,7 @@ private extension SymptomsView {
     func indexFor(_ slide: Slide) -> Int {
         slides.firstIndex(of: slide) ?? 0
     }
-    
+
     func resetChecker() {
         selectedSymptoms.removeAll()
         ageGroup = .older
@@ -566,6 +588,14 @@ private extension SymptomsView {
     func evaluateRisk() -> ResultState {
         let s = selectedSymptoms
 
+        let coreCount = count(in: s, from: SymptomSection.core.symptoms.map(\.id))
+        let sepsisCount = count(in: s, from: SymptomSection.sepsis.symptoms.map(\.id))
+        let generalCount = count(in: s, from: SymptomSection.general.symptoms.map(\.id))
+        let babyCount = ageGroup == .baby
+            ? count(in: s, from: SymptomSection.baby.symptoms.map(\.id))
+            : 0
+
+        // Direct emergency symptoms
         if s.contains(.nonBlanchingRash) ||
             s.contains(.seizure) ||
             s.contains(.hardToWake) ||
@@ -576,51 +606,39 @@ private extension SymptomsView {
             return .emergency
         }
 
-        if has(.confusion, .drowsy, in: s) { return .emergency }
-        if has(.coldHandsFeet, .paleBlueOrMottledSkin, in: s) { return .emergency }
+        // Strong emergency combinations
         if has(.rapidBreathing, .drowsy, in: s) { return .emergency }
-        if has(.rapidBreathing, .paleBlueOrMottledSkin, in: s) { return .emergency }
         if has(.fever, .coldHandsFeet, .muscleJointLimbPain, in: s) { return .emergency }
-
-        let sepsisCount = count(in: s, from: SymptomSection.sepsis.symptoms.map(\.id))
         if sepsisCount >= 3 { return .emergency }
 
-        if ageGroup == .baby {
-            if has(.bulgingSoftSpot, .floppyOrUnresponsive, in: s) { return .emergency }
-            if has(.refusingFeeds, .floppyOrUnresponsive, in: s) { return .emergency }
+        // Strong urgent patterns
+        if coreCount >= 2 { return .urgent }
+        if s.contains(.worseningQuickly) && (coreCount > 0 || sepsisCount > 0) {
+            return .urgent
         }
 
-        let coreCount = count(in: s, from: SymptomSection.core.symptoms.map(\.id))
-
-        if coreCount >= 2 { return .urgent }
-        if has(.fever, .headache, .stiffNeck, in: s) { return .urgent }
-        if has(.headache, .stiffNeck, .sensitivityToLight, in: s) { return .urgent }
-        if has(.repeatedVomiting, .drowsy, in: s) { return .urgent }
-        if s.contains(.worseningQuickly) && (coreCount > 0 || sepsisCount > 0) { return .urgent }
-
         if ageGroup == .baby {
-            let babyCount = count(in: s, from: SymptomSection.baby.symptoms.map(\.id))
+            if s.contains(.bulgingSoftSpot) { return .urgent }
             if babyCount >= 2 { return .urgent }
         }
 
+        // Fallback score
         var score = 0
         score += 3 * coreCount
         score += 3 * sepsisCount
-        score += 1 * count(in: s, from: SymptomSection.general.symptoms.map(\.id))
+        score += 1 * generalCount
+        score += 2 * babyCount
 
         if s.contains(.worseningQuickly) { score += 2 }
-        if ageGroup == .baby { score += 2 }
         if isImmunocompromised { score += 2 }
 
         switch score {
-        case 0...2:
+        case 0:
             return .monitor
-        case 3...5:
+        case 1...3:
             return .seekAdvice
-        case 6...8:
-            return .urgent
         default:
-            return .emergency
+            return .urgent
         }
     }
 
@@ -841,7 +859,7 @@ private struct SymptomSection: Identifiable {
             .init(id: .coldHandsFeet, title: "Cold hands and feet", note: nil),
             .init(id: .rapidBreathing, title: "Rapid breathing", note: nil),
             .init(id: .muscleJointLimbPain, title: "Muscle / joint / limb pain", note: "Especially severe limb pain"),
-            .init(id: .paleBlueOrMottledSkin, title: "Pale, blue or mottled skin", note: nil)
+            .init(id: .paleBlueOrMottledSkin, title: "Pale, blue or mottled skin", note: "Emergency symptom on its own")
         ]
     )
 
@@ -884,7 +902,7 @@ private struct SymptomSection: Identifiable {
         symptoms: [
             .init(id: .refusingFeeds, title: "Refusing feeds", note: nil),
             .init(id: .highPitchedCry, title: "High-pitched cry", note: nil),
-            .init(id: .bulgingSoftSpot, title: "Bulging soft spot", note: nil),
+            .init(id: .bulgingSoftSpot, title: "Bulging soft spot", note: "Treat seriously"),
             .init(id: .floppyOrUnresponsive, title: "Floppy / unresponsive", note: "Emergency symptom on its own"),
             .init(id: .unusualIrritability, title: "Unusual irritability", note: nil)
         ]
