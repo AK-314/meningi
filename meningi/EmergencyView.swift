@@ -92,7 +92,7 @@ struct EmergencyView: View {
                     Spacer()
 
                     Button {
-                        selectedTab = 0
+                        selectedTab = 1
                     } label: {
                         Image(systemName: "xmark")
                             .font(.system(size: 14, weight: .bold))
