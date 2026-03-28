@@ -496,7 +496,7 @@ private extension AboutView {
                 value: animateScrollCue
             )
 
-            Text("Scroll down")
+            Text("Scroll down slowly")
                 .font(.caption.weight(.semibold))
         }
         .foregroundStyle(.white.opacity(0.88))
