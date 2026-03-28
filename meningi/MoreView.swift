@@ -26,6 +26,13 @@ struct MoreView: View {
                             moreRow("Vaccinations", systemImage: "syringe")
                         }
                         .buttonStyle(.plain)
+                        
+                        NavigationLink {
+                            UnderstandMeningitisView()
+                        } label: {
+                            moreRow("Understand meningitis", systemImage: "brain.head.profile")
+                        }
+                        .buttonStyle(.plain)
 
                         NavigationLink {
                             EmergencyInfoView()
