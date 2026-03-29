@@ -6,27 +6,38 @@ struct VaccinationsView: View {
 
     var body: some View {
         NavigationStack {
-            ZStack {
-                design.background
-                    .ignoresSafeArea()
+            GeometryReader { geometry in
+                ZStack {
+                    design.background
+                        .ignoresSafeArea()
 
-                VStack(spacing: 0) {
-                    headerBlock
+                    VStack(spacing: 0) {
+                        headerBlock
 
-                    ScrollViewReader { proxy in
-                        ScrollView(showsIndicators: false) {
-                            VStack(alignment: .leading, spacing: design.sectionSpacing) {
-                                introBlock
+                        ScrollViewReader { proxy in
+                            ScrollView(showsIndicators: false) {
+                                VStack(alignment: .leading, spacing: design.sectionSpacing) {
+                                    introBlock
 
-                                VStack(spacing: 12) {
-                                    ForEach(VaccineItem.allCases, id: \.self) { vaccine in
-                                        vaccineAccordionCard(vaccine, proxy: proxy)
-                                            .id(vaccine)
+                                    VStack(spacing: 12) {
+                                        ForEach(VaccineItem.allCases, id: \.self) { vaccine in
+                                            vaccineAccordionCard(vaccine, proxy: proxy)
+                                                .id(vaccine)
+                                        }
                                     }
+
+                                    // Extra room so centre anchoring still works
+                                    // even when all cards are collapsed.
+                                    Color.clear
+                                        .frame(height: geometry.size.height * 0.28)
                                 }
+                                .padding(.horizontal, design.horizontalPadding)
+                                .padding(.bottom, 32)
+                                .frame(
+                                    minHeight: geometry.size.height,
+                                    alignment: .top
+                                )
                             }
-                            .padding(.horizontal, design.horizontalPadding)
-                            .padding(.bottom, 32)
                         }
                     }
                 }

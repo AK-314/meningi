@@ -4,27 +4,27 @@ struct HomeView: View {
     @Binding var selectedTab: Int
 
     var body: some View {
-        ZStack {
-            background
-                .ignoresSafeArea()
+        GeometryReader { geometry in
+            ZStack {
+                background
+                    .ignoresSafeArea()
 
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: 28) {
-                    Spacer(minLength: 28)
-
-                    headerSection
-                    storyCard
-                    actionButtons
-
-                    Spacer(minLength: 20)
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 24) {
+                        headerSection
+                        storyCard
+                        actionButtons
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, max(8, geometry.safeAreaInsets.top - 6))
+                    .padding(.bottom, 24)
+                    .frame(maxWidth: .infinity)
+                    .frame(minHeight: geometry.size.height, alignment: .top)
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 24)
-                .padding(.bottom, 30)
             }
         }
     }
-    
+
     private let teal = Color(red: 0.18, green: 0.78, blue: 0.76)
 
     private var headerSection: some View {
@@ -39,7 +39,6 @@ struct HomeView: View {
         }
         .multilineTextAlignment(.center)
         .frame(maxWidth: .infinity)
-        .padding(.top, 20)
     }
 
     private var storyCard: some View {
