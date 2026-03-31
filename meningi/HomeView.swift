@@ -33,7 +33,7 @@ struct HomeView: View {
                 .font(.system(size: 36, weight: .bold, design: .rounded))
                 .foregroundStyle(.white)
 
-            Text("Early awareness saves lives.")
+            Text("Spot the warning signs early.")
                 .font(.system(size: 15, weight: .medium))
                 .foregroundStyle(.white.opacity(0.68))
         }
@@ -47,7 +47,7 @@ struct HomeView: View {
                 .font(.system(size: 18, weight: .semibold))
                 .foregroundStyle(.white)
 
-            Text("My younger brother nearly died from meningitis. The early signs can look ordinary at first, and that delay can be dangerous. I made meningi to help people recognise serious symptoms faster and know when to act.")
+            Text("Meningitis kills over 200,000 people every year, and my younger brother was almost one of them. The early symptoms can look ordinary, but delays are dangerous. I built meningi to help people recognise serious signs early and know when to act.")
                 .font(.system(size: 15))
                 .foregroundStyle(.white.opacity(0.85))
                 .lineSpacing(3)
